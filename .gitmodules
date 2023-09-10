@@ -1,0 +1,3 @@
+[submodule "nessy"]
+	path = nessy
+	url = https://github.com/BogdanW3/nessy.git
