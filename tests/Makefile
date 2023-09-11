@@ -21,7 +21,7 @@ TARGETS := nes
 
 # Name of the final, single-file executable.
 # Default: name of the current dir with target name appended
-PROGRAM := nessy-game
+PROGRAM := test
 
 # Path(s) to additional libraries required for linking the program
 # Use only if you don't want to place copies of the libraries in SRCDIR
@@ -43,12 +43,14 @@ ASFLAGS =
 
 # Additional linker flags and options.
 # Default: none
-LDFLAGS = -L $(LLVM_MOS_DIR)mos-platform\nes-cnrom\lib -I$(LLVM_MOS_DIR)mos-platform\nes\lib
+LDFLAGS = -L ../target/nessy -L $(LLVM_MOS_DIR)mos-platform\nes-cnrom\lib -L $(LLVM_MOS_DIR)mos-platform\nes\lib
 LDFLAGS += -T link.ld -Wl,--defsym,__prg_rom_size=32,--defsym,__chr_rom_size=16,--defsym,__mapper=0
+
+
 
 # Path to the directory containing C and ASM sources.
 # Default: src
-SRCDIR :=
+SRCDIR := ${TEST_NAME}
 
 # Path to the directory containing "library" C and ASM sources.
 # Default: src
@@ -56,27 +58,7 @@ LIBDIR :=
 
 # Path to the directory where object files are to be stored (inside respective target subdirectories).
 # Default: obj
-OBJDIR :=
-
-# Command used to run the emulator.
-# Default: depending on target platform. For default (c64) target: x64 -kernal kernal -VICIIdsize -autoload
-EMUCMD :=
-
-# Optional commands used before starting the emulation process, and after finishing it.
-# Default: none
-# Examples
-#PREEMUCMD := osascript -e "tell application \"System Events\" to set isRunning to (name of processes) contains \"X11.bin\"" -e "if isRunning is true then tell application \"X11\" to activate"
-#PREEMUCMD := osascript -e "tell application \"X11\" to activate"
-#POSTEMUCMD := osascript -e "tell application \"System Events\" to tell process \"X11\" to set visible to false"
-#POSTEMUCMD := osascript -e "tell application \"Terminal\" to activate"
-PREEMUCMD :=
-POSTEMUCMD :=
-
-# On Windows machines VICE emulators may not be available in the PATH by default.
-# In such case, please set the variable below to point to directory containing
-# VICE emulators.
-#VICE_HOME := "C:\Program Files\WinVICE-2.2-x86\"
-VICE_HOME :=
+OBJDIR := build
 
 # Options state file name. You should not need to change this, but for those
 # rare cases when you feel you really need to name it differently - here you are
@@ -100,31 +82,6 @@ endef
 # Compiler flags used to tell the compiler to optimise for SIZE
 define _optsize_
   CFLAGS += -Or
-endef
-
-# Compiler and assembler flags for generating listings
-define _listing_
-  CFLAGS += --listing $$(@:.o=.lst)
-  ASFLAGS += --listing $$(@:.o=.lst)
-  REMOVES += $(addsuffix .lst,$(basename $(OBJECTS)))
-endef
-
-# Linker flags for generating map file
-define _mapfile_
-  LDFLAGS += --mapfile $$@.map
-  REMOVES += $(PROGRAM).map
-endef
-
-# Linker flags for generating VICE label file
-define _labelfile_
-  LDFLAGS += -Ln $$@.lbl
-  REMOVES += $(PROGRAM).lbl
-endef
-
-# Linker flags for generating a debug file
-define _debugfile_
-  LDFLAGS += -Wl --dbgfile,$$@.dbg
-  REMOVES += $(PROGRAM).dbg
 endef
 
 ###############################################################################
@@ -258,7 +215,7 @@ endif
 .SUFFIXES:
 .PHONY: all test clean zap love
 
-all: $(PROGRAM)
+all: $(OBJDIR)/$(PROGRAM)
 
 -include $(STATEFILE)
 
@@ -315,29 +272,24 @@ $(TARGETOBJDIR)/%.o: %.S | $(TARGETOBJDIR)
 	mkdir -p $(dir $@)
 	$(CC) -c $(ASFLAGS) -o $@ $<
 
-$(PROGRAM): $(CONFIG) $(OBJECTS) $(LIBS)
-	${CC} ${LDFLAGS} -o ${@} ${OBJECTS} ${LIBS} $(LLIBS)
-	$(OD) -w --source $(PROGRAM).elf > $(@).asm
-	$(OC) -O binary -j .text -j .rodata $(PROGRAM).elf $(PROGRAM).crom.bin
-	$(OC) -O binary -j .vector $(PROGRAM).elf $(PROGRAM).cvec.bin
+$(OBJDIR)/$(PROGRAM): $(CONFIG) $(OBJECTS) $(LIBS)
+	${CC} ${LDFLAGS} -o $@ ${OBJECTS} ${LIBS} $(LLIBS)
+	$(OD) -w --source $@.elf > $@.asm
+	$(OC) -O binary -j .text -j .rodata $@.elf ../bin/crom.bin
+	$(OC) -O binary -j .vector $@.elf ../bin/cvec.bin
 
-dump: $(PROGRAM)
-	$(OD) -w --source $(PROGRAM).elf --full-contents > $(PROGRAM).full.asm
-
-test: $(PROGRAM)
-	$(PREEMUCMD)
-	$(EMUCMD) $<
-	$(POSTEMUCMD)
+dump: $(OBJDIR)/$(PROGRAM)
+	$(OD) -w --source $<.elf --full-contents > $<.full.asm
 
 clean:
 	$(call RMFILES,$(OBJECTS))
 	$(call RMFILES,$(DEPENDS))
 	$(call RMFILES,$(REMOVES))
-	$(call RMFILES,$(PROGRAM))
+	$(call RMFILES,$(OBJDIR)/$(PROGRAM))
 
 else # $(words $(TARGETLIST)),1
 
-all test clean:
+all clean:
 	$(foreach t,$(TARGETLIST),$(MAKE) TARGETS=$t $@$(NEWLINE))
 
 endif # $(words $(TARGETLIST)),1

@@ -69,6 +69,7 @@ VERILATOR_INPUT =  +librescan +libext+.v+.sv+.vh+.svh -y . $(INCLUDE_FOLDERS) ve
 
 
 run:
+	make -C tests
 	@echo
 	@echo "VERILATE: ----------------"
 	$(VERILATOR) $(VERILATOR_FLAGS) $(VERILATOR_INPUT)
