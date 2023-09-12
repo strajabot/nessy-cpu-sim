@@ -275,6 +275,7 @@ $(TARGETOBJDIR)/%.o: %.S | $(TARGETOBJDIR)
 $(OBJDIR)/$(PROGRAM): $(CONFIG) $(OBJECTS) $(LIBS)
 	${CC} ${LDFLAGS} -o $@ ${OBJECTS} ${LIBS} $(LLIBS)
 	$(OD) -w --source $@.elf > $@.asm
+	mkdir -p ../bin
 	$(OC) -O binary -j .text -j .rodata $@.elf ../bin/crom.bin
 	$(OC) -O binary -j .vector $@.elf ../bin/cvec.bin
 

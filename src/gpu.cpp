@@ -37,7 +37,8 @@ bool GPU::update(const std::unique_ptr<Vcpu>& cpu, uint64_t clock)
 
 	}
 	else
-	{		switch (address)
+	{		
+		switch (address)
 		{
 			case 0:
 				write_control(cpu, cpu->DOUT);

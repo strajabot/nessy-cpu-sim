@@ -9,6 +9,8 @@
 #include "gpu.hpp"
 #include "memory.hpp"
 
+double sc_time_stamp() { return 0; }
+
 int main() {
 	
 	Verilated::mkdir("logs");
@@ -37,10 +39,22 @@ int main() {
 
 	int clock = 1;	
 	// Simulate until $finish
+	int k = 0;
 	while (!ctx->gotFinish()) {
+		cpu->FC = false;
 		
-		memory.update(cpu, clock) ||
-			gpu.update(cpu, clock);
+		if ((cpu->RD || cpu->WR) && !(memory.update(cpu, clock) ||
+			gpu.update(cpu, clock))) {
+			k++;
+			if (k == 5) {
+			cpu->FC = true;
+			printf("[%zu] ERROR: No device answered a memory request: RD=%d, WR=%d\n",
+				clock, cpu->RD, cpu->WR);
+				k = 0;
+			}
+		} else {
+			k = 0;
+		}
 
 		cpu->eval();
 		trace_file->dump(ctx->time());
