@@ -66,7 +66,7 @@ VERILATOR_FLAGS += --build
 
 # Input files for Verilator
 VERILATOR_INPUT =  +librescan +libext+.v+.sv+.vh+.svh -y . $(INCLUDE_FOLDERS) verilog/${TLE}.v $(shell find src -name "*.cpp" -printf "src/%P ")
-
+VERILATOR_INPUT += -CFLAGS "-g -ggdb"  --build-jobs 4
 
 run:
 	@echo

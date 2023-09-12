@@ -48,6 +48,7 @@ int main() {
 			k++;
 			if (k == 5) {
 			cpu->FC = true;
+			cpu->DIN = 0xFC;
 			printf("[%zu] ERROR: No device answered a memory request: RD=%d, WR=%d\n",
 				clock, cpu->RD, cpu->WR);
 				k = 0;
@@ -72,7 +73,7 @@ int main() {
 		//cpu->eval();
 
 		//Sledeci korak;
-		if(clock == 24000) break;
+		if(clock == 240000) break;
 		clock++;
 	}
 

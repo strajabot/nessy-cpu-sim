@@ -44,13 +44,17 @@ private:
 
 	bool clFC = false;
 
-	uint8_t rect_data[7][2] = {};
-	uint8_t line_data[7][2] = {};
-	uint8_t pixel_data[5][2] = {};
+	uint8_t rect_data[11][2] = {};
+	uint8_t line_data[11][2] = {};
+	uint8_t pixel_data[7][2] = {};
 
 	uint8_t rect_idx[2] = {};
 	uint8_t line_idx[2] = {};
 	uint8_t pixel_idx[2] = {};
+
+	uint8_t rect_ticks[2] = {};
+	uint8_t line_ticks[2] = {};
+	uint8_t pixel_ticks[2] = {};
 
 
 	void update_nmi(const std::unique_ptr<Vcpu>& cpu, uint64_t clock);

@@ -26,7 +26,11 @@ PROGRAM := test
 # Path(s) to additional libraries required for linking the program
 # Use only if you don't want to place copies of the libraries in SRCDIR
 # Default: none
-LIBS    :=
+LIBS :=
+
+# Additional libraries to link against, e.g. -lfoo -lbar
+# Default: none
+LLIBS :=
 
 # Custom linker configuration file
 # Use only if you don't want to place it in SRCDIR
