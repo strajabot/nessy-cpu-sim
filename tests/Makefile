@@ -43,7 +43,7 @@ ASFLAGS =
 
 # Additional linker flags and options.
 # Default: none
-LDFLAGS = -L ../target/nessy -L $(LLVM_MOS_DIR)mos-platform\nes-cnrom\lib -L $(LLVM_MOS_DIR)mos-platform\nes\lib
+LDFLAGS = -L ../target/nessy -L $(LLVM_MOS_DIR)mos-platform\nes\lib
 LDFLAGS += -T link.ld -Wl,--defsym,__prg_rom_size=32,--defsym,__chr_rom_size=16,--defsym,__mapper=0
 
 

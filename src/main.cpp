@@ -6,6 +6,7 @@
 #include <verilated_vcd_c.h>
 
 #include "Vcpu.h"
+#include "gpu.hpp"
 #include "memory.hpp"
 
 int main() {
@@ -25,10 +26,12 @@ int main() {
 
 	trace_file->open("logs/trace.vcd");
 
+	GPU gpu;
 	Memory memory;
 
 	cpu->CLK = 0;
 	cpu->nNMI = 1;
+	cpu->nIRQ = 1;
 	cpu->DIN = 0;
 	cpu->FC = 0;
 
@@ -36,7 +39,8 @@ int main() {
 	// Simulate until $finish
 	while (!ctx->gotFinish()) {
 		
-		memory.update(cpu, clock);
+		memory.update(cpu, clock) ||
+			gpu.update(cpu, clock);
 
 		cpu->eval();
 		trace_file->dump(ctx->time());

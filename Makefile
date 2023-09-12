@@ -65,11 +65,14 @@ VERILATOR_FLAGS += --Mdir build
 VERILATOR_FLAGS += --build
 
 # Input files for Verilator
-VERILATOR_INPUT =  +librescan +libext+.v+.sv+.vh+.svh -y . $(INCLUDE_FOLDERS) verilog/${TLE}.v src/main.cpp src/memory.cpp 
+VERILATOR_INPUT =  +librescan +libext+.v+.sv+.vh+.svh -y . $(INCLUDE_FOLDERS) verilog/${TLE}.v $(shell find src -name "*.cpp" -printf "src/%P ")
 
 
 run:
+	@echo
+	@echo "COMPILE TEST: ------------"
 	make -C tests
+	
 	@echo
 	@echo "VERILATE: ----------------"
 	$(VERILATOR) $(VERILATOR_FLAGS) $(VERILATOR_INPUT)

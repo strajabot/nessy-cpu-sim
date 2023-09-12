@@ -30,12 +30,14 @@ uint8_t Context::getSP(const std::unique_ptr<Vcpu>& cpu)
 
 uint16_t Context::getPC(const std::unique_ptr<Vcpu>& cpu)
 {
-	return cpu->rootp->cpu__DOT__PC;
+	return 0;
+	//return cpu->rootp->cpu__DOT__PC;
 }
 
 uint16_t Context::getMAR(const std::unique_ptr<Vcpu>& cpu)
 {
-	return cpu->rootp->cpu__DOT__MAR;
+	return 0;
+	//return cpu->rootp->cpu__DOT__MAR;
 }
 
 uint8_t Context::getMDR(const std::unique_ptr<Vcpu>& cpu)
@@ -60,7 +62,8 @@ uint8_t Context::getNMIFF(const std::unique_ptr<Vcpu>& cpu)
 
 uint8_t* Context::getIR(const std::unique_ptr<Vcpu>& cpu)
 {
-	return {cpu->rootp->cpu__DOT__IR0_};
+	return nullptr;
+	//return {cpu->rootp->cpu__DOT__IR0_};
 }
 
 void Context::save(const std::unique_ptr<Vcpu>& cpu, std::ostream& stream) 
