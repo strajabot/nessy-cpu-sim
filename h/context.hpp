@@ -17,7 +17,7 @@ public:
 	static uint8_t  getTMP(const std::unique_ptr<Vcpu>& cpu);
 	static uint8_t  getIRQFF(const std::unique_ptr<Vcpu>& cpu);
 	static uint8_t  getNMIFF(const std::unique_ptr<Vcpu>& cpu);
-	static uint8_t *getIR(const std::unique_ptr<Vcpu>& cpu);
+	static uint8_t	getIR0(const std::unique_ptr<Vcpu>& cpu);
 
 	static void     save(const std::unique_ptr<Vcpu>& cpu,  std::ostream& stream);
 

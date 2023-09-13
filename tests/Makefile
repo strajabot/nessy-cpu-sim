@@ -193,15 +193,15 @@ override PROGRAM := $(PROGRAM).$(TARGETLIST)
 
 OBJECTS =
 
-SOURCES_S = $(shell find . -name "*.S" -printf "%P ")
+SOURCES_S = $(shell find $(TEST_NAME) -name "*.S" -printf "$(TEST_NAME)/%P ")
 OBJECTS += $(addprefix ${OBJDIR}/,${SOURCES_S:.S=.o})
 vpath %.S $(sort $(dir ${SOURCES_S}))
 
-SOURCES_C = $(shell find . -name "*.c" -printf "%P ")
+SOURCES_C = $(shell find $(TEST_NAME) -name "*.c" -printf "$(TEST_NAME)/%P ")
 OBJECTS += $(addprefix ${OBJDIR}/,${SOURCES_C:.c=.o})
 vpath %.c $(sort $(dir ${SOURCES_C}))
 
-SOURCES_CPP = $(shell find . -name "*.cpp" -printf "%P ")
+SOURCES_CPP = $(shell find $(TEST_NAME) -name "*.cpp" -printf "$(TEST_NAME)/%P ")
 OBJECTS += $(addprefix ${OBJDIR}/,${SOURCES_CPP:.cpp=.o})
 vpath %.cpp $(sort $(dir ${SOURCES_CPP}))
 
@@ -278,9 +278,11 @@ $(TARGETOBJDIR)/%.o: %.S | $(TARGETOBJDIR)
 $(OBJDIR)/$(PROGRAM): $(CONFIG) $(OBJECTS) $(LIBS)
 	${CC} ${LDFLAGS} -o $@ ${OBJECTS} ${LIBS} $(LLIBS)
 	$(OD) -w --source $@ > $@.asm
+
+all:
 	mkdir -p ../bin
-	$(OC) -O binary -j .text -j .rodata $@ ../bin/crom.bin
-	$(OC) -O binary -j .vector $@ ../bin/cvec.bin
+	$(OC) -O binary -j .text -j .rodata $< ../bin/crom.bin
+	$(OC) -O binary -j .vector $< ../bin/cvec.bin
 
 dump: $(OBJDIR)/$(PROGRAM)
 	$(OD) -w --source $< --full-contents > $<.full.asm

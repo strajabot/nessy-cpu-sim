@@ -64,6 +64,16 @@ bool Memory::update(const std::unique_ptr<Vcpu>& cpu, uint64_t clock)
 	return false;
 }
 
+void Memory::dump()
+{
+	std::ofstream ram_stream("bin/ram.bin");
+
+	ram_stream.write((char*)ram, mem_map[RAM][SIZE]);
+
+	ram_stream.close();
+}
+
+
 bool Memory::checkRange(uint16_t address, MEM_TYPES module)
 {
 	return (address >= mem_map[module][START]) && (address < (mem_map[module][START] + mem_map[module][SIZE]));

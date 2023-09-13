@@ -75,11 +75,13 @@ endif
 ifneq ($(DebugTag),)
 VERILATOR_INPUT += -CFLAGS "-g -ggdb"
 endif
-
 run:
+
+ifneq ($(TEST_NAME),)
 	@echo
 	@echo "COMPILE TEST: ------------"
-	make -C tests
+	make -C tests -E TEST_NAME=$(TEST_NAME)
+endif
 	
 	@echo
 	@echo "VERILATE: ----------------"
@@ -90,7 +92,6 @@ run:
 	@rm -rf logs
 	@mkdir -p logs
 	build/V${shell basename ${TLE}} +trace
-	
 	@echo
 	@echo "DONE: -------------------"
 	@echo

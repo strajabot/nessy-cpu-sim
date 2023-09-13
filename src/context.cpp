@@ -58,10 +58,9 @@ uint8_t Context::getNMIFF(const std::unique_ptr<Vcpu>& cpu)
 	return 0;
 }
 
-uint8_t* Context::getIR(const std::unique_ptr<Vcpu>& cpu)
+uint8_t Context::getIR0(const std::unique_ptr<Vcpu>& cpu)
 {
-	return nullptr;
-	//return {cpu->rootp->cpu__DOT__IR0_};
+	return cpu->IR0_;
 }
 
 void Context::save(const std::unique_ptr<Vcpu>& cpu, std::ostream& stream) 
