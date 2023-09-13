@@ -2,9 +2,34 @@
 
 #include <cstdint>
 #include <algorithm>
+ 
+#include <GL/gl.h>
+#include <GL/glut.h>
+
+
+void sob()
+{
+
+}
+
 GPU::GPU()
 {
-	//todo: Sta treba da stoji ovde;
+
+#ifdef GPUOut
+	int argc = 0;
+	char** argv = {};
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	glutInitWindowSize(800, 600);
+	glutInitWindowPosition(300, 200);
+
+	glutCreateWindow("GPU");
+
+	
+	glutDisplayFunc(sob);
+
+	glClear(GL_COLOR_BUFFER_BIT);
+#endif
 }
 
 bool GPU::update(const std::unique_ptr<Vcpu>& cpu, uint64_t clock)
@@ -102,6 +127,12 @@ void GPU::update_gpu(const std::unique_ptr<Vcpu>& cpu, uint64_t address, uint64_
 				uint8_t r = pixel_data[0][high] << 4;
 				uint8_t g = pixel_data[1][high] << 4;
 				uint8_t b = pixel_data[2][high] << 4;
+#ifdef GPUOut
+				glBegin(GL_POINTS);
+					glColor3ub(r, g, b);
+					glVertex2i(x, y);
+				glEnd();
+#endif
 				pixel_idx[high] = 0;
 			}
 		}
@@ -120,6 +151,13 @@ void GPU::update_gpu(const std::unique_ptr<Vcpu>& cpu, uint64_t address, uint64_
 				uint8_t r = line_data[0][high] << 4;
 				uint8_t g = line_data[1][high] << 4;
 				uint8_t b = line_data[2][high] << 4;
+#ifdef GPUOut
+				glBegin(GL_LINES);
+					glColor3ub(r, g, b);
+					glVertex2i(x1, y1);
+					glVertex2i(x2, y2);
+				glEnd();
+#endif
 				line_idx[high] = 0;
 			}
 		}
@@ -138,10 +176,20 @@ void GPU::update_gpu(const std::unique_ptr<Vcpu>& cpu, uint64_t address, uint64_
 				uint8_t r = rect_data[0][high] << 4;
 				uint8_t g = rect_data[1][high] << 4;
 				uint8_t b = rect_data[2][high] << 4;
+#ifdef GPUOut
+				glBegin(GL_QUADS);
+					glColor3ub(r, g, b);
+					glVertex2i(x1, y1);
+					glVertex2i(x2, y2);
+					glVertex2i(x2, y1);
+					glVertex2i(x1, y2);
+				glEnd();
+#endif
 				rect_idx[high] = 0;
 			}
 		}
 	}
+	glFlush();
 }
 
 uint8_t GPU::read_status()

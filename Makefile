@@ -75,6 +75,9 @@ endif
 ifneq ($(DebugTag),)
 VERILATOR_INPUT += -CFLAGS "-g -ggdb"
 endif
+ifneq ($(GPUTag),)
+VERILATOR_INPUT += -CFLAGS "-DGPUOut"
+endif
 run:
 
 ifneq ($(TEST_NAME),)
