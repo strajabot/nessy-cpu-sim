@@ -39,7 +39,7 @@ CONFIG  :=
 
 # Additional C compiler flags and options.
 # Default: none
-CFLAGS  = -Os
+CFLAGS  = -Os -MMD -MP -MF"${@:%.o=%.d}"
 
 # Additional assembler flags and options.
 # Default: none
@@ -47,8 +47,7 @@ ASFLAGS =
 
 # Additional linker flags and options.
 # Default: none
-LDFLAGS = -L ../target/nessy -L $(LLVM_MOS_DIR)mos-platform\nes\lib
-LDFLAGS += -T link.ld -Wl,--defsym,__prg_rom_size=32,--defsym,__chr_rom_size=16,--defsym,__mapper=0
+LDFLAGS =  -L ../target/nessy/lib -T link.ld -nostdlib -lcrt0
 
 
 
@@ -278,13 +277,13 @@ $(TARGETOBJDIR)/%.o: %.S | $(TARGETOBJDIR)
 
 $(OBJDIR)/$(PROGRAM): $(CONFIG) $(OBJECTS) $(LIBS)
 	${CC} ${LDFLAGS} -o $@ ${OBJECTS} ${LIBS} $(LLIBS)
-	$(OD) -w --source $@.elf > $@.asm
+	$(OD) -w --source $@ > $@.asm
 	mkdir -p ../bin
-	$(OC) -O binary -j .text -j .rodata $@.elf ../bin/crom.bin
-	$(OC) -O binary -j .vector $@.elf ../bin/cvec.bin
+	$(OC) -O binary -j .text -j .rodata $@ ../bin/crom.bin
+	$(OC) -O binary -j .vector $@ ../bin/cvec.bin
 
 dump: $(OBJDIR)/$(PROGRAM)
-	$(OD) -w --source $<.elf --full-contents > $<.full.asm
+	$(OD) -w --source $< --full-contents > $<.full.asm
 
 clean:
 	$(call RMFILES,$(OBJECTS))

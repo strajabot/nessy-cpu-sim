@@ -7,6 +7,8 @@ VERILOG_DIR=verilog
 
 $(shell if [ ! -f Makefile.user ]; then cp Makefile.user.example Makefile.user; fi)
 
+-include Makefile.user
+
 TLE=cpu/cpu
 CORE_COUNT=4
 
@@ -56,7 +58,7 @@ VERILATOR_FLAGS += --trace
 #VERILATOR_FLAGS += --debug
 
 # Add this trace to get a backtrace in gdb
-VERILATOR_FLAGS += --gdbbt
+#VERILATOR_FLAGS += --gdbbt
 
 # Set output directory
 VERILATOR_FLAGS += --Mdir build
@@ -65,8 +67,14 @@ VERILATOR_FLAGS += --Mdir build
 VERILATOR_FLAGS += --build
 
 # Input files for Verilator
-VERILATOR_INPUT =  +librescan +libext+.v+.sv+.vh+.svh -y . $(INCLUDE_FOLDERS) verilog/${TLE}.v $(shell find src -name "*.cpp" -printf "src/%P ")
-VERILATOR_INPUT += -CFLAGS "-g -ggdb"  --build-jobs 4
+VERILATOR_INPUT =  +librescan +libext+.v+.sv+.vh+.svh -y . $(INCLUDE_FOLDERS) verilog/${TLE}.v $(shell find src -name "*.cpp" -printf "src/%P ") --build-jobs $(CORE_COUNT)
+ifneq ($(GPUTag),)
+VERILATOR_INPUT += -LDFLAGS "-lopengl32 -lfreeglut"
+endif
+
+ifneq ($(DebugTag),)
+VERILATOR_INPUT += -CFLAGS "-g -ggdb"
+endif
 
 run:
 	@echo

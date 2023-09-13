@@ -7,6 +7,7 @@
 
 #include "Vcpu.h"
 #include "gpu.hpp"
+#include "keyboard.hpp"
 #include "memory.hpp"
 
 double sc_time_stamp() { return 0; }
@@ -29,6 +30,7 @@ int main() {
 	trace_file->open("logs/trace.vcd");
 
 	GPU gpu;
+	Keyboard keyboard;
 	Memory memory;
 
 	cpu->CLK = 0;
@@ -44,13 +46,13 @@ int main() {
 		cpu->FC = false;
 		
 		if ((cpu->RD || cpu->WR) && !(memory.update(cpu, clock) ||
-			gpu.update(cpu, clock))) {
+			gpu.update(cpu, clock) || keyboard.update(cpu, clock))) {
 			k++;
 			if (k == 5) {
 			cpu->FC = true;
 			cpu->DIN = 0xFC;
-			printf("[%zu] ERROR: No device answered a memory request: RD=%d, WR=%d\n",
-				clock, cpu->RD, cpu->WR);
+			printf("[%zu] ERROR: No device answered a memory request: RD=%d, WR=%d, ADDR=%x\n",
+				clock, cpu->RD, cpu->WR, cpu->A);
 				k = 0;
 			}
 		} else {
@@ -73,7 +75,7 @@ int main() {
 		//cpu->eval();
 
 		//Sledeci korak;
-		if(clock == 240000) break;
+		if(clock == 24000) break;
 		clock++;
 	}
 

@@ -4,4 +4,5 @@ logs/
 build/
 verilog/
 .clangd
+makefile.user
 

@@ -4,7 +4,8 @@
 
 Memory::Memory()
 {
-	ram = new uint8_t[mem_map[RAM][SIZE]];
+	// the wonky brackets are to make sure the arrays are zeroed
+	ram = new uint8_t[mem_map[RAM][SIZE]]();
 	crom = new uint8_t[mem_map[CROM][SIZE]];
 	cvec = new uint8_t[mem_map[CVEC][SIZE]];
 

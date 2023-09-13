@@ -77,9 +77,14 @@ bool GPU::update(const std::unique_ptr<Vcpu>& cpu, uint64_t clock)
 
 void GPU::update_nmi(const std::unique_ptr<Vcpu>& cpu, uint64_t clock)
 {
-	if(clock % (1040*665) == 0)
+	static const constexpr uint32_t nmi_freq = 1040*665;
+
+	if(clock % (nmi_freq) == 0)
+	{
 		cpu->nNMI = !(control & NMI_MASK);
-	if ((clock - 1040*64) % (1040*665) == 0)
+		printf("[%zu] SET nNMI: %d\n", clock, cpu->nNMI);
+	}
+	if ((clock - 1040*64) % (nmi_freq) == 0)
 		cpu->nNMI = 1;
 }
 
