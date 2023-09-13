@@ -5,44 +5,42 @@
 
 uint8_t Context::getA(const std::unique_ptr<Vcpu>& cpu)
 {
-	return cpu->rootp->cpu__DOT__ACC;
+	return cpu->ACC;
 }
 
 uint8_t Context::getX(const std::unique_ptr<Vcpu>& cpu)
 {
-	return cpu->rootp->cpu__DOT__X;
+	return cpu->X;
 }
 
 uint8_t Context::getY(const std::unique_ptr<Vcpu>& cpu)
 {
-	return cpu->rootp->cpu__DOT__Y; 
+	return cpu->Y; 
 }
 
 uint8_t Context::getPSW(const std::unique_ptr<Vcpu>& cpu)
 {
-	return cpu->rootp->cpu__DOT__PSW;
+	return cpu->PSW;
 }
 
 uint8_t Context::getSP(const std::unique_ptr<Vcpu>& cpu)
 {
-	return cpu->rootp->cpu__DOT__SP;
+	return cpu->SP;
 }
 
 uint16_t Context::getPC(const std::unique_ptr<Vcpu>& cpu)
 {
-	return 0;
-	//return cpu->rootp->cpu__DOT__PC;
+	return cpu->PC;
 }
 
 uint16_t Context::getMAR(const std::unique_ptr<Vcpu>& cpu)
 {
-	return 0;
-	//return cpu->rootp->cpu__DOT__MAR;
+	return cpu->MAR;
 }
 
 uint8_t Context::getMDR(const std::unique_ptr<Vcpu>& cpu)
 {
-	return cpu->rootp->cpu__DOT__MDR;
+	return cpu->MDR;
 }
 
 uint8_t Context::getTMP(const std::unique_ptr<Vcpu>& cpu)

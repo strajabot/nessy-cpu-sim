@@ -146,12 +146,14 @@ void GPU::update_gpu(const std::unique_ptr<Vcpu>& cpu, uint64_t address, uint64_
 
 uint8_t GPU::read_status()
 {
-	uint8_t status = !pixel_idx[1]; status <<= 1;
-	status = !pixel_idx[0]; status <<= 1;
-	status = !line_idx[1]; status <<= 1;
-	status = !line_idx[0]; status <<= 1;
-	status = !rect_idx[1]; status <<= 1;
-	status = !rect_idx[0]; status <<= 1;
+	uint8_t status = 0;
+	
+	status |= !rect_idx[1]; status <<= 1;
+	status |= !rect_idx[0]; status <<= 1;
+	status |= !line_idx[1]; status <<= 1;
+	status |= !line_idx[0]; status <<= 1;
+	status |= !pixel_idx[1]; status <<= 1;
+	status |= !pixel_idx[0]; status <<= 1;
 
 	return status;
 
