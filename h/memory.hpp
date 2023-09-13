@@ -15,6 +15,8 @@ public:
 
 	bool update(const std::unique_ptr<Vcpu>& cpu, uint64_t clock) override;
 
+	void dump();
+
 private:
 	enum MEM_TYPES {
 		RAM, CROM, CVEC

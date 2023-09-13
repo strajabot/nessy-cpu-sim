@@ -1,6 +1,7 @@
 .global _start
 _start:
-ldx #$ef
+lda #$71
+ror
 brk
 
 nmi:

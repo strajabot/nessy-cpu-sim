@@ -1,5 +1,1 @@
-# Copy this file with name "Makefile.user" and edit it to match your system
-
-# CC65_DIR = E:\\cc65\\
-LLVM_MOS_DIR = E:\\llvm-mos\\
-NONES =
+LLVM_MOS_DIR = /opt/llvm-mos/

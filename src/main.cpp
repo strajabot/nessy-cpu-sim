@@ -6,6 +6,8 @@
 #include <verilated_vcd_c.h>
 
 #include "Vcpu.h"
+
+#include "context.hpp"
 #include "gpu.hpp"
 #include "keyboard.hpp"
 #include "memory.hpp"
@@ -73,23 +75,19 @@ int main() {
 		ctx->timeInc(1);
 		cpu->CLK = !cpu->CLK;
 		//cpu->eval();
+		
+		if(clock > 25 && (Context::getIR0(cpu) == 0x00)) 
+			break;
+		if(clock == 200)
+			break;
 
-		//Sledeci korak;
-		if(clock == 240000) break;
 		clock++;
 	}
-
 
 	// Final model cleanup
 	cpu->final();
 
-	// Coverage analysis (calling write only after the test is known to pass)
-#if VM_COVERAGE
-	Verilated::mkdir("logs");
-	ctx->coveragep()->write("logs/coverage.dat");
-#endif
+	memory.dump();
 
-	// Return good completion status
-	// Don't use exit() or destructor won't get called
 	return 0;
 }
