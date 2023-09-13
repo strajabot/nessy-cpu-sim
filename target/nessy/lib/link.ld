@@ -42,13 +42,12 @@ SECTIONS {
     __data_start = .;
     *(.data)
     *(.data.*)
-
   } >ram AT>rom
   __data_load_start = LOADADDR(.data);
   __data_size = SIZEOF(.data);
 
   .zp.data : {
-    __zp-data_start = .;
+    __zp_data_start = .;
     *(.zp.data)
     *(.zp.data.*)
     *(.zp.rodata)

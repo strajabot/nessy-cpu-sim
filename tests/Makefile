@@ -7,7 +7,7 @@ $(shell if [ ! -f Makefile.user ]; then cp Makefile.user.example Makefile.user; 
 
 -include Makefile.user
 
-CC = $(LLVM_MOS_DIR)bin/mos-nes-cnrom-clang
+CC = $(LLVM_MOS_DIR)bin/mos-clang
 OC = $(LLVM_MOS_DIR)bin/llvm-objcopy
 OD = $(LLVM_MOS_DIR)bin/llvm-objdump
 

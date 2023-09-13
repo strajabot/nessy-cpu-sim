@@ -75,7 +75,7 @@ int main() {
 		//cpu->eval();
 
 		//Sledeci korak;
-		if(clock == 24000) break;
+		if(clock == 240000) break;
 		clock++;
 	}
 
@@ -93,4 +93,3 @@ int main() {
 	// Don't use exit() or destructor won't get called
 	return 0;
 }
-
