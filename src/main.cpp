@@ -41,7 +41,7 @@ int main() {
 	cpu->DIN = 0;
 	cpu->FC = 0;
 
-	int clock = 1;	
+	size_t clock = 1;	
 	// Simulate until $finish
 	int k = 0;
 	while (!ctx->gotFinish()) {
@@ -71,7 +71,7 @@ int main() {
 		cpu->eval();
 		trace_file->dump(ctx->time());
 
-		if(clock > 200) 
+		if(clock > 500) 
 			break;
 	
 

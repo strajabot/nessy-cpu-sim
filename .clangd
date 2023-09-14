@@ -1,2 +1,0 @@
-CompileFlags:
-  Add: [ -I/home/strajabot/Straja/nessy-cpu-sim/build, -I/home/strajabot/Straja/nessy-cpu-sim/h, -I/usr/share/verilator/include ]
