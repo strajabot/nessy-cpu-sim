@@ -62,30 +62,33 @@ int main() {
 		}
 
 		cpu->eval();
-		trace_file->dump(ctx->time());
+		trace_file->dump(ctx->time());	
+	
 			
 		//Rastuca ivica;
 		ctx->timeInc(1);
 		cpu->CLK = !cpu->CLK;
 		cpu->eval();
 		trace_file->dump(ctx->time());
+
+		if(clock > 200) 
+			break;
 	
 
 		//Padajuca Ivica;
 		ctx->timeInc(1);
 		cpu->CLK = !cpu->CLK;
 		//cpu->eval();
-		
-		if(clock > 25 && (Context::getIR0(cpu) == 0x00)) 
-			break;
 
 		clock++;
 	}
 
+	memory.dump();
+	Context::dump(cpu);
+	
 	// Final model cleanup
 	cpu->final();
 
-	memory.dump();
 
 	return 0;
 }

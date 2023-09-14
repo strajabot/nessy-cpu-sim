@@ -61,7 +61,7 @@ LIBDIR :=
 
 # Path to the directory where object files are to be stored (inside respective target subdirectories).
 # Default: obj
-OBJDIR := build
+OBJDIR := build/${TEST_NAME}
 
 # Options state file name. You should not need to change this, but for those
 # rare cases when you feel you really need to name it differently - here you are

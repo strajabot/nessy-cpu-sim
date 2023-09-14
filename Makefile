@@ -67,7 +67,7 @@ VERILATOR_FLAGS += --Mdir build
 VERILATOR_FLAGS += --build
 
 # Input files for Verilator
-VERILATOR_INPUT =  +librescan +libext+.v+.sv+.vh+.svh -y . $(INCLUDE_FOLDERS) verilog/${TLE}.v $(shell find src -name "*.cpp" -printf "src/%P ") --build-jobs $(CORE_COUNT)
+VERILATOR_INPUT =  +librescan +libext+.v+.sv+.vh+.svh -y . $(INCLUDE_FOLDERS) verilog/${TLE}.v $(shell find src -name "*.cpp" -printf "src/%P ") --build-jobs $(CORE_COUNT) -CFLAGS "--std=c++23"
 ifneq ($(GPUTag),)
 VERILATOR_INPUT += -LDFLAGS "-lopengl32 -lfreeglut"
 endif

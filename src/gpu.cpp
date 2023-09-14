@@ -2,10 +2,11 @@
 
 #include <cstdint>
 #include <algorithm>
- 
+
+#ifdef GPUOut
 #include <GL/gl.h>
 #include <GL/glut.h>
-
+#endif
 
 void sob()
 {
@@ -189,7 +190,9 @@ void GPU::update_gpu(const std::unique_ptr<Vcpu>& cpu, uint64_t address, uint64_
 			}
 		}
 	}
+#ifdef GPUOut
 	glFlush();
+#endif
 }
 
 uint8_t GPU::read_status()
