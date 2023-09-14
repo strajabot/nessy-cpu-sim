@@ -9,12 +9,17 @@ Memory::Memory()
 	crom = new uint8_t[mem_map[CROM][SIZE]];
 	cvec = new uint8_t[mem_map[CVEC][SIZE]];
 
+	std::ifstream ram_stream("bin/input_ram.bin");
 	std::ifstream crom_stream("bin/crom.bin");
 	std::ifstream cvec_stream("bin/cvec.bin");
-
+	
+	
+	if(!ram_stream.fail())
+		ram_stream.read((char*)ram, mem_map[RAM][SIZE]);
 	crom_stream.read((char*)crom, mem_map[CROM][SIZE]);
 	cvec_stream.read((char*)cvec, mem_map[CVEC][SIZE]);
 
+	ram_stream.close();
 	crom_stream.close();
 	cvec_stream.close();
 }
@@ -66,7 +71,7 @@ bool Memory::update(const std::unique_ptr<Vcpu>& cpu, uint64_t clock)
 
 void Memory::dump()
 {
-	std::ofstream ram_stream("bin/ram.bin");
+	std::ofstream ram_stream("bin/output_ram.bin");
 
 	ram_stream.write((char*)ram, mem_map[RAM][SIZE]);
 

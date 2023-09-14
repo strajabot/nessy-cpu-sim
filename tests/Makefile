@@ -281,6 +281,7 @@ $(OBJDIR)/$(PROGRAM): $(CONFIG) $(OBJECTS) $(LIBS)
 
 all:
 	mkdir -p ../bin
+	cp $(TEST_NAME)/input_ram.bin ../bin/input_ram.bin
 	$(OC) -O binary -j .text -j .rodata $< ../bin/crom.bin
 	$(OC) -O binary -j .vector $< ../bin/cvec.bin
 

@@ -20,7 +20,7 @@ do
 		continue
 	fi
 
-	RES=$(diff <(hexdump ./bin/ram.bin) <(hexdump ./tests/$TEST/bin/ram.bin))
+	RES=$(diff <(hexdump ./bin/output_ram.bin) <(hexdump ./tests/$TEST/output_ram.bin))
 
 	if [[ -z "$RES" ]]; then
 		continue
