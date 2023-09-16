@@ -176,12 +176,6 @@ define NEWLINE
 endef
 # Note: Do not remove any of the two empty lines above !
 
-# The compiler is actually a bat script in the windows redist
-ifeq ($(OS),Windows_NT)
-  CC := $(CC).bat
-endif
-
-
 TARGETLIST := $(subst $(COMMA),$(SPACE),$(TARGETS))
 
 ifeq ($(words $(TARGETLIST)),1)

@@ -56,10 +56,10 @@ bool GPU::update(const std::unique_ptr<Vcpu>& cpu, uint64_t clock)
 		if (address == 0)
 		{
 			cpu->DIN = read_status();
-			cpu->FC = true;
-			clFC = true;
-			return true;
 		}
+		cpu->FC = true;
+		clFC = true;
+		return true;
 
 	}
 	else
@@ -94,7 +94,7 @@ bool GPU::update(const std::unique_ptr<Vcpu>& cpu, uint64_t clock)
 				return true;
 			break;
 			default:
-				return false;
+				return true;
 
 		}
 	}
