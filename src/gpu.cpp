@@ -116,19 +116,19 @@ void GPU::update_nmi(const std::unique_ptr<Vcpu>& cpu, uint64_t clock)
 
 void GPU::update_gpu(const std::unique_ptr<Vcpu>& cpu, uint64_t address, uint64_t clock)
 {
-	for (bool high = false; high != true; high = true)
+	for (uint8_t high = 0; high < 2; high++)
 	{
 		if (pixel_ticks[high])
 		{
 			pixel_ticks[high]--;
 			if (pixel_ticks[high] == 0)
 			{
+#ifdef GPUOut
 				uint16_t x = pixel_data[3][high] + (pixel_data[4][high] << 8);
 				uint16_t y = pixel_data[5][high] + (pixel_data[6][high] << 8);
 				uint8_t r = pixel_data[0][high] << 4;
 				uint8_t g = pixel_data[1][high] << 4;
 				uint8_t b = pixel_data[2][high] << 4;
-#ifdef GPUOut
 				glBegin(GL_POINTS);
 					glColor3ub(r, g, b);
 					glVertex2i(x, y);
@@ -138,13 +138,14 @@ void GPU::update_gpu(const std::unique_ptr<Vcpu>& cpu, uint64_t address, uint64_
 			}
 		}
 	}
-	for (bool high = false; high != true; high = true)
+	for (uint8_t high = 0; high < 2; high++)
 	{
 		if (line_ticks[high])
 		{
 			line_ticks[high]--;
 			if (line_ticks[high] == 0)
 			{
+#ifdef GPUOut
 				uint16_t x1 = line_data[3][high] + (line_data[4][high] << 8);
 				uint16_t y1 = line_data[5][high] + (line_data[6][high] << 8);
 				uint16_t x2 = line_data[7][high] + (line_data[8][high] << 8);
@@ -152,7 +153,6 @@ void GPU::update_gpu(const std::unique_ptr<Vcpu>& cpu, uint64_t address, uint64_
 				uint8_t r = line_data[0][high] << 4;
 				uint8_t g = line_data[1][high] << 4;
 				uint8_t b = line_data[2][high] << 4;
-#ifdef GPUOut
 				glBegin(GL_LINES);
 					glColor3ub(r, g, b);
 					glVertex2i(x1, y1);
@@ -163,13 +163,14 @@ void GPU::update_gpu(const std::unique_ptr<Vcpu>& cpu, uint64_t address, uint64_
 			}
 		}
 	}
-	for (bool high = false; high != true;  high = true)
+	for (uint8_t high = 0; high < 2; high++)
 	{
 		if (rect_ticks[high])
 		{
 			rect_ticks[high]--;
 			if (rect_ticks[high] == 0)
 			{
+#ifdef GPUOut
 				uint16_t x1 = rect_data[3][high] + (rect_data[4][high] << 8);
 				uint16_t y1 = rect_data[5][high] + (rect_data[6][high] << 8);
 				uint16_t x2 = rect_data[7][high] + (rect_data[8][high] << 8);
@@ -177,7 +178,6 @@ void GPU::update_gpu(const std::unique_ptr<Vcpu>& cpu, uint64_t address, uint64_
 				uint8_t r = rect_data[0][high] << 4;
 				uint8_t g = rect_data[1][high] << 4;
 				uint8_t b = rect_data[2][high] << 4;
-#ifdef GPUOut
 				glBegin(GL_QUADS);
 					glColor3ub(r, g, b);
 					glVertex2i(x1, y1);
