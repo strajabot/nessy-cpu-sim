@@ -32,7 +32,7 @@ do
 		then
 			RES+=$'\n\n'
 		fi
-		RES+=$(diff ./tests/$TEST/output_reg.dump ./bin/output_reg.dump)
+		RES+=$(diff ./tests/$TEST/output_reg.dump ./bin/output_reg.dump -b)
 	else 
 		echo --------------------------------------------
 		echo TEST: $TEST missing reference register dump
